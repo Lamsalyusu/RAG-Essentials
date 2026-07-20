@@ -1,0 +1,79 @@
+=========================================================================================
+                The RAG archeticture 
+=========================================================================================
+ USER QUERY (input question)
+            |
+            |
+Retreiver (finds relevant docs)  ---> Vector Store [Embedded documents indexed for search]
+            |
+            |
+context + query  (combined answers) 
+            |
+            |                              
+LLM (generate answers)                      
+            |
+            |
+Response (groundeed in docs)
+==================================================================================
+RAG grounds LLM response in actual documents ,reducing hallucinations
+==================================================================================
+                    Basic RAG Chain:
+                    chain structure:
+==================================================================================
+{
+context,   |  prompt   |  LLM   | parser
+questions  | (Template)| model  | output
+}          |           |        |
+===================================================================================
+context --> is external , verified data (like companys docs or db) retrieved by the system
+question --> the users prompt or query
+
+===========================================================================
+parallel input processing
+context  <-- Retreiver
+question <-- Runnable Passthrough --> means donot modify anything when it comes to questions
+Questions passes through unchanged
+
+===========================================================================
+                PROMPT TEMPLATE
+---------------------------------------------------------------------------
+Answer based only on:
+{context}
+Question :{question}
+===========================================================================
+                Handling "I dont know"
+===========================================================================
+Without instruction:
+Q.what is quantum computing?
+--> Quantum computing uses qubits..."(makes up answer)
+-------------------------------------------------------------------------
+With Instruction:
+Q.What is quantum computing?
+--> I dont have information about that in the provided context.
+==========================================================================
+                The prompt Pattern
+==========================================================================
+Answer based only on the following context
+If the context doesnot contain the answer ,say "i dont have information about that".
+context:{context} Question{question}
+==========================================================================
+Document Loader Overview
+==========================================================================
+Raw files --> .pdf  .txt .html .docx .csv
+                |
+         Document Loader
+                |
+            List[Document]
+page_content                    metadata
+the actual text content         source page authors
+============================================================================
+Core Document Loaders
+============================================================================
+PyPDFLoader --> pdf files
+TextLoader ---> plain text .txt files
+Directory Loader ---> multiple files  folder/*
+WebBaseLoader --> web pages https://
+UnstructuredLoader complex docs mixed
+
+
+
