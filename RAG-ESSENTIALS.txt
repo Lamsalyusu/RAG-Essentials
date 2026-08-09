@@ -74,6 +74,29 @@ TextLoader ---> plain text .txt files
 Directory Loader ---> multiple files  folder/*
 WebBaseLoader --> web pages https://
 UnstructuredLoader complex docs mixed
+=============================================================================
+Doucument Processing Pipeline - RAG Indexing Pipeline
+1.Document LOaders 
+-> extract texts from files
+-> handle different formats
+-----------------------------------------------------------------------------
+2.Text Splitetrs(vvimp in contect of vector dbs)
+--> chunk into 500 - 1000 char pieces 
+- preserve sentence boundaries
+- add overlap (100-200) chars
+-----------------------------------------------------------------------------
+3.Embdding Generation
+-> convert each chunk to Vector
+--> use OpenAI/Cohere API 
+-----------------------------------------------------------------------------
+4.Vector Storage
+- store in Chroma/Pinecone 
+-index for fast search
+-----------------------------------------------------------------------------
+5. Ready for queries
+
+
+
 
 
 
