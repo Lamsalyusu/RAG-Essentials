@@ -5,6 +5,7 @@ from langchain_community.document_loaders import (
     DirectoryLoader,
     PyPDFLoader,)
 import tempfile
+# import beautifulsoup4 as bs4
 from pathlib import Path
 # form langchain_community.document_loaders import PyPDFLoader, TextLoader
 from dotenv import load_dotenv
