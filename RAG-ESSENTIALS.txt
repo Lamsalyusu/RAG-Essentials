@@ -95,6 +95,75 @@ Doucument Processing Pipeline - RAG Indexing Pipeline
 -----------------------------------------------------------------------------
 5. Ready for queries
 
+Fixed Chunking 
+-> splits text by a rule that ignores meaning - usually a fixed number of characters
+-> eg every 500 tokens or 50 tokens of overlap
+Semantic Chunking
+-> splits text based on meaning/topic boundaries instead of raw character count 
+-> works by embedding sentences then measuring the similarity between consecutive sentences 
+-> when similarity drops below a threshold that's a topic shift it cuts there
+
+==============================================================================
+Four Chunking Variables That affect quality 
+1.Chunk size
+too small --> Loses context
+sweet spot --> 200- 1000 tokens
+too large --> dilutes meaning
+2.Overlap
+chunk 1 overlaps (10-20%) with chunk 2
+3.Split Bonudaries 
+Fixed -->  random cut
+Recursive --> cutting at Paragraph/sentences
+Semantic --> cutting at meaning boundaries (with cyan glow - best)
+4. Content Type
+Code 
+Legal 
+Markdown
+Each needs different treatment
+---------------(CHUNKING IS NOT PREPROCESSING ITS AN ARCHETICTURE)----------- 
+================================================================================
+Chunking Strategies Compared
+1. Fixed
+2. Recursive
+3. Semantic
+4. Late
+Basic -> Intermediate -> Advanced
+---------------------------------------------------------------------------------
+Fixed Chunking 
+-> cutting words at exact intervals
+the problematic chunks
+chunk 1: (mod word cut)
+The quick brown fox jum
+chunk 2:(no fragement)
+ps over the large
+chunk 3:(too small)
+y dog
+----------------------------------------------------------------------------------
+PROS (When to use it)
+Simple implementation 
+Fast processing
+Predictable sizes
+-----------------------------------------------------------------------------------
+CONS
+Destroys meaning
+poor quality results 
+inaccurate retrieval
+Frustrating user experience
+-----------------------------------------------------------------------------------
+Recursive Chunking
+Paragraph(\n\n) -> Lines(\n) -> Sentences(.) -> Clauses(,) -> Words(') -> Characters (')
+80% of production RAG uses this 
+Good Balance :Quality + Speed 
+Recommended Default
+
+Semantic Chunking 
+-> splits at meaning boundaries , not arbitary points 
+
+
+
+
+
+
 
 
 
