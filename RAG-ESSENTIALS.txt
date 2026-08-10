@@ -155,13 +155,75 @@ Paragraph(\n\n) -> Lines(\n) -> Sentences(.) -> Clauses(,) -> Words(') -> Charac
 80% of production RAG uses this 
 Good Balance :Quality + Speed 
 Recommended Default
-
-Semantic Chunking 
+------------------------------------------------------------------------------------
+Semantic Chunking -> Best Quality
 -> splits at meaning boundaries , not arbitary points 
+-> oauth topic chunk 1:[40,50,60] --- rate limit topic chunk 2:[54,55,56]
+-> used when accuracy matters more than speed
+how it works:
+1.Embed each sentence
+2.compare adjacent embeddings
+3.split when similarity drops
+------------------------------------------------------------------------------------
+Before understanding LATE CHUNKING Lets understand Traditional Chunking
+
+                   --> chunk 1 --> embed --> Embedding 1
+Document -> Chunk  --> chunk 2 --> embed --> Embedding 2
+                   --> chunk 3 --> enbed --> Embedding 3
+
+              Each chunk embedded in ISOLATION 
+              Loses cross chunk context
+
+------------------------------------------------------------------------------------
+
+                                                         ---> Pooled Embeddings 1
+Document -> Embed FULL DOC -> Token embeddings -> chunks ---> Pooled Embeddings 2
+                                                         ---> Pooled Embeddings 3
+                            
+                            Full Document context Preserved
+                            Chunks KNow about Each other
 
 
+cutting edge - requires secific model support 
+models :jina embeddings-v2 etc
+The future of Chunking
+
+Key insight 
+--> Traditional :chunk 5 has no idea what chunk 1-4 contains
+--> Late:Chunk 5 embedding includes full document context
+--> Result 10-12% accuracy
+====================================================================================
+CHUNKING DECISION FRAMEWORK
+              START 
+                |
+                |
+         PROTOTYPING QUICKLY ---> (yes) -> Recursive
+                |
+                |(no)
+         SIMPLE STRUCTURED DOCS --> (yes) --> Recursive
+                |
+                |
+         QUALITY IS CRITICAL ---> (yes) --> Semantic
+                |
+                |
+         COMPLEX TOPIC SHIFTING ---> (yes) --> SEMANTIC  ----> (no) ---> recursive
 
 
+General Docs ===> Recursive --> 500-1000 chunks
+Technical ======> Semantic  ---> Auto 
+Code ======> Code Splitter ---> Function 
+Markdown ====> MD splitter ---> Headers
+ The 80/20 rule
+ Recursive = 80% of the way
+ Semantic = the last 20%
+ Start recursive pgrade if needed
+
+Embedding Dimensions 
+text-embedding-3-small -> 1536 dims 
+-->Every single word-piece or character processed by the model gets its own unique list of 1536 numbers
+text-embedding-3-large -> 3072 dims
+Gemini embedding -> 768 dims
+BGE -small -> 384 dims
 
 
 
