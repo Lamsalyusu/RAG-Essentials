@@ -224,6 +224,49 @@ text-embedding-3-small -> 1536 dims
 text-embedding-3-large -> 3072 dims
 Gemini embedding -> 768 dims
 BGE -small -> 384 dims
+====================================================================================
+RAG Pipeline
+Phase 1: Indexing 
+LOAD ---> CHUNK ---> EMBED ---> STORE
+Phase 2: Querying
+? -> EMbed Query -> Search --> Search --> Retrieve --> Generate(Augment) --> Answer
+
+
+Indexing --> Documents -> Chunks -> Embeddings --> Vector DB 
+                                                        |
+                                     -------------------|
+                                     |
+Querying --> Question -> Embed -> Search DB -> Retrieve DOCS -> LLM --> Answer 
+
+chunks embeddings ra question embeddings ma eutai models use garnu parchha haii
+====================================================================================
+
+Three Rules For production RAG:
+1. Same Embedding model Everywhere 
+Ensure consistency across ingestion, indexing and query. 
+Avoid mismatch error
+------------------------------------------------------------------------------------
+2. Embed Quality > Quantity 
+Prioritize high-quality relevant vector over massive noisy dataset
+Less is often more
+------------------------------------------------------------------------------------
+3.Test Retrieval Seperately
+Validate Retrieval performance independent of generation 
+use specific evaluation metrics
+------------------------------------------------------------------------------------
+Chroma Database Workflow
+------------------------------------------------------------------------------------
+                     App  layer 
+                     Queries     LLM Context Windows   Answer 
+---------------------|------------------|-------------------------------------------
+Gen Embeddings       |                  |
+                     |      |---->------|
+---------------------|------|-------------------------------------------------------
+Chroma               |      |
+                     Documents --> Call me Yuyutsu ...
+                     Embeddings --> [1.0,2.1,3.4 ...]
+------------------------------------------------------------------------------------
+
 
 
 
