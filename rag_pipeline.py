@@ -3,7 +3,6 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough,RunnableParallel
 from langchain_core.output_parsers import StrOutputParser
 from langchain_groq import ChatGroq
-from langchain.chat_models import init_chat_model
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -45,8 +44,7 @@ def create_kb():
 
 def demo_basic_rag():
     vector_store = create_kb()
-    retiever = vector_store.as_retriever(search_type = "similarity",search_kwargs ={'k':2})
-    # llm = init_chat_model()
+    retriever = vector_store.as_retriever(search_type = "similarity",search_kwargs ={'k':2})
     prompt = ChatPromptTemplate.from_template(
         '''Answer the question based on the following context:
         {context}
@@ -63,16 +61,14 @@ def demo_basic_rag():
 
     llm = ChatGroq(model='llama-3.3-70b-versatile',temperature=0)
     rag_chain = (
-
-        {"context":retiever |format_docs,"question":RunnablePassthrough()}
-
+        
+        {"context": retriever |format_docs,"question":RunnablePassthrough()}
         | prompt
         | llm
         | StrOutputParser()
-        
-        )
+    )
 
-    query = "What are the core components of LangChain?"
+    query = "What is my name?"
     answer = rag_chain.invoke(query)
 
     print(f"Question: {query}")
@@ -81,3 +77,5 @@ def demo_basic_rag():
 
 if __name__ == "__main__":
     demo_basic_rag()
+
+
